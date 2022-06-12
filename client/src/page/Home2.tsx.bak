@@ -1,0 +1,74 @@
+import React, { useState, memo } from "react";
+import { useSpring, animated, useSprings } from "@react-spring/web";
+import { resolveTripleslashReference } from "typescript";
+import { useSelector, shallowEqual } from "react-redux";
+
+interface RootState {
+    cards1: [
+        {
+            title: string;
+        }
+    ];
+}
+
+function Home() {
+    const [data, set] = useState(["hello", "world", "omgomg"]);
+    const cards = useSelector((state: RootState) => state.cards1);
+    const [open, setOpen] = useState(false);
+    const [styles, api] = useSpring(() => {
+        return {
+            // loop: true,
+            config: { duration: 1250 },
+            to: [{ opacity: 1, color: "green", transform: "scale(1)" }],
+            from: { opacity: 0, color: "red", transform: "scale(1)" },
+        };
+    });
+
+    const { width, color } = useSpring({
+        config: { duration: 2000 },
+        width: open ? 200 : 0,
+        color: open ? "green" : "red",
+    });
+
+    const springs = useSprings(
+        data.length,
+        data.map((data) => ({
+            loop: true,
+
+            to: [{ opacity: 1, color: "green", transform: "scale(1)" }],
+            from: { opacity: 0, color: "red", transform: "scale(1)" },
+        }))
+    );
+
+    console.log("rerun home 2s");
+
+    return (
+        <div
+            className="home"
+            onClick={() => {
+                setOpen(true);
+                api({
+                    opacity: 1,
+                    color: "blue",
+                    transform: "scale(1.6)",
+                });
+            }}
+            style={{ fontSize: "5rem" }}
+        >
+            <animated.div
+            // style={{ border: width.to((o) => `${o * 10}px solid red`) }}
+            >
+                {width.to({ range: [0, 10], output: [0, 0.5] })}
+            </animated.div>
+
+            <animated.div>{color.to((c) => c)}</animated.div>
+
+            <animated.div style={styles}>I will fade in and out{}</animated.div>
+            {springs.map((styles, i) => (
+                <animated.div style={styles}>{data[i]}</animated.div>
+            ))}
+        </div>
+    );
+}
+
+export default Home;

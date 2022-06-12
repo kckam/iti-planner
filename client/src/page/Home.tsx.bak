@@ -1,0 +1,63 @@
+import React, { useState } from "react";
+import { useTransition, animated } from "@react-spring/web";
+import { resolveTripleslashReference } from "typescript";
+import { useSelector, useDispatch, shallowEqual } from "react-redux";
+import { removeCard } from "../actions";
+import { useAppSelector } from "../hooks/hooks";
+import { useEffect } from "react";
+
+interface RootState {
+    cards: [
+        {
+            title: string;
+        }
+    ];
+}
+
+function Home() {
+    // const cards = useAppSelector((state) => state.cards, shallowEqual);
+    const cards = useSelector((state: RootState) => [], shallowEqual);
+    const dispatch = useDispatch();
+    const [data, set] = useState(["hello", "world", "omgomg"]);
+    const transitions = useTransition(cards, {
+        from: { opacity: 0, color: "black", height: 0, innerHeight: 0 },
+        enter: { opacity: 1, color: "red", height: 80, innerHeight: 80 },
+        leave: { opacity: 0, color: "green", height: 0, innerHeight: 0 },
+        update: { color: "#cccccc" },
+    });
+
+    console.log("home rerun");
+
+    useEffect(() => {
+        console.log("home rerun useEffect");
+    }, [data]);
+
+    return (
+        <div
+            className="home"
+            onClick={() => {
+                set((prev) => [...prev]);
+                dispatch(removeCard());
+            }}
+        >
+            Dispatch
+            {transitions(({ opacity, height, ...rest }, { title }) => {
+                return (
+                    <animated.div
+                        style={{
+                            opacity,
+                            height,
+                        }}
+                    >
+                        <animated.div>
+                            {title}-
+                            <animated.span style={rest}>{title}</animated.span>
+                        </animated.div>
+                    </animated.div>
+                );
+            })}
+        </div>
+    );
+}
+
+export default Home;
