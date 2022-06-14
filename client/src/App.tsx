@@ -1,42 +1,49 @@
-import React, { useEffect } from "react";
-import { useDispatch, useSelector, shallowEqual } from "react-redux";
-import { getTodos } from "./actions";
+import React, { useState } from "react";
+
 import Home from "./page/Home";
 import GlobalStyles from "./components/styles/Global";
-// import Home2 from "./page/Home2";
-import { useAppSelector } from "./hooks/hooks";
 import { ThemeProvider } from "styled-components";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
+import { initDB } from "react-indexed-db";
+import { dBConfig } from "./utils/dBConfig";
+
+initDB(dBConfig);
 
 const darkTheme = {
-    body: "#000",
-    text: "#fff",
+  body: "#000",
+  text: "#fff",
 };
 const lightTheme = {
-    body: "#fff",
-    text: "#000",
+  body: "#fff",
+  text: "#000",
+};
+
+export const NAV = {
+  HOME: "home",
+  CART: "cart",
 };
 
 function App() {
-    // const dispatch = useDispatch();
+  // const dispatch = useDispatch();
 
-    // useEffect(() => {
-    //     dispatch<any>(getTodos());
-    // }, []);
+  const [nav, setNav] = useState(NAV.HOME);
+  // useEffect(() => {
+  //     dispatch<any>(getTodos());
+  // }, []);
 
-    return (
-        <ThemeProvider theme={lightTheme}>
-            <div className="app">
-                <GlobalStyles />
-                <div>
-                    <Header />
-                    <Home />
-                    <Footer />
-                </div>
-            </div>
-        </ThemeProvider>
-    );
+  return (
+    <ThemeProvider theme={lightTheme}>
+      <div className="app">
+        <GlobalStyles />
+        <div>
+          <Header />
+          <Home />
+          <Footer nav={nav} setNav={setNav} />
+        </div>
+      </div>
+    </ThemeProvider>
+  );
 }
 
 export default App;

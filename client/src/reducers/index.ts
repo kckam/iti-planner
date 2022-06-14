@@ -1,33 +1,91 @@
+import { createReducer } from "@reduxjs/toolkit";
 import { combineReducers } from "redux";
 
-const defaultState = [
-    { title: "No Scrubs", duration: "4:05" },
-    { title: "Macarena", duration: "2:30" },
-    { title: "All Star", duration: "3:15" },
-    { title: "I Want it That Way", duration: "1:45" },
+const defaultCardsState = [
+  {
+    label: "a",
+    cards: [
+      "https://upload.wikimedia.org/wikipedia/commons/5/53/RWS_Tarot_16_Tower.jpg",
+      "https://upload.wikimedia.org/wikipedia/commons/5/53/RWS_Tarot_16_Tower.jpg",
+      "https://dummyimage.com/600x400/000/fff",
+      "https://dummyimage.com/200x400/000/fff",
+    ],
+  },
+  {
+    label: "ad",
+    cards: [
+      "https://upload.wikimedia.org/wikipedia/commons/5/53/RWS_Tarot_16_Tower.jpg",
+      "https://upload.wikimedia.org/wikipedia/commons/5/53/RWS_Tarot_16_Tower.jpg",
+      "https://dummyimage.com/600x400/000/fff",
+      "https://dummyimage.com/200x400/000/fff",
+    ],
+  },
 ];
 
-const CATEGORIES = [{}];
+interface card {
+  active: Boolean;
+  cards: string[];
+}
 
-const cardsReducer = (state = defaultState, action: any) => {
-    switch (action.type) {
-        case "REMOVE_CARD":
-            return state;
-        default:
-            return state;
-    }
+const defaultCartsState: card[] = [
+  {
+    active: true,
+    cards: [],
+  },
+];
+
+const cardsReducer = (state = defaultCardsState, action: any) => {
+  switch (action.type) {
+    case "REMOVE_CARD":
+      return state;
+    default:
+      return state;
+  }
 };
 
-const cards1Reducer = () => {
-    return defaultState;
-};
+const cartReducer = (state = defaultCartsState, action: any) => {
+  switch (action.type) {
+    case "ADD_TO_CART":
+      return state.map((el) =>
+        el.active
+          ? { ...el, cards: [...el.cards, action.payload as string] }
+          : el
+      );
+    case "NEXT_DAY":
+      let nextIndex = state.findIndex((el) => el.active) + 1;
 
-const toDosReducer = (state: any = [], action: any) => {
-    return action.payload || [];
+      if (state[nextIndex] === undefined) {
+        return [
+          ...state.map((el) => ({ ...el, active: false })),
+          ...defaultCartsState,
+        ];
+      }
+
+      return state.map((el, index) => ({
+        ...el,
+        active: index === nextIndex ? true : false,
+      }));
+    case "PREV_DAY":
+      let prevIndex = state.findIndex((el) => el.active) - 1;
+      if (prevIndex < 0) return state;
+
+      if (typeof state[prevIndex] === undefined) {
+        return [
+          ...state.map((el) => ({ ...el, active: false })),
+          ...defaultCartsState,
+        ];
+      }
+
+      return state.map((el, index) => ({
+        ...el,
+        active: index === prevIndex ? true : false,
+      }));
+    default:
+      return state;
+  }
 };
 
 export default combineReducers({
-    cards: cardsReducer,
-    cards1: cards1Reducer,
-    todos: toDosReducer,
+  cards: cardsReducer,
+  cart: cartReducer,
 });
