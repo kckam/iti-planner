@@ -1,6 +1,7 @@
 import React, { Dispatch, SetStateAction } from "react";
 import styled from "styled-components";
 import { NAV } from "../App";
+import localforage from "localforage";
 
 interface Iprops {
   nav: string;

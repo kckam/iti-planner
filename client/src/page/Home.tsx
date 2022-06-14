@@ -26,7 +26,7 @@ const StyledHome = styled.section`
   }
   .category {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 300px));
+    grid-template-columns: repeat(auto-fit, minmax(300px, 450px));
     grid-gap: 1rem;
     justify-content: center;
     margin: auto 0;
@@ -41,7 +41,7 @@ const StyledHome = styled.section`
       display: flex;
       justify-content: center;
       align-items: center;
-      height: 400px;
+      height: 500px;
       will-change: transform;
       /* padding: 50% 1rem; */
     }

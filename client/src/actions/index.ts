@@ -1,4 +1,5 @@
 import axios from "axios";
+import localforage from "localforage";
 
 export const selectCard = (card: any) => {
   return {
@@ -17,6 +18,17 @@ export const addToCart = (id: string | number) => {
   return {
     type: "ADD_TO_CART",
     payload: id,
+  };
+};
+
+export const loadExistingCards = () => {
+  return async (dispatch: any, getState: any) => {
+    let data = await localforage.getItem("cards");
+
+    dispatch({
+      type: "LOAD_CARDS",
+      payload: data,
+    });
   };
 };
 

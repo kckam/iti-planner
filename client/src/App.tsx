@@ -1,14 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import Home from "./page/Home";
 import GlobalStyles from "./components/styles/Global";
 import { ThemeProvider } from "styled-components";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
-import { initDB } from "react-indexed-db";
-import { dBConfig } from "./utils/dBConfig";
-
-initDB(dBConfig);
+import { useAppDispatch } from "./hooks/hooks";
+import { loadExistingCards } from "./actions";
 
 const darkTheme = {
   body: "#000",
@@ -28,9 +26,11 @@ function App() {
   // const dispatch = useDispatch();
 
   const [nav, setNav] = useState(NAV.HOME);
-  // useEffect(() => {
-  //     dispatch<any>(getTodos());
-  // }, []);
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch<any>(loadExistingCards());
+  }, []);
 
   return (
     <ThemeProvider theme={lightTheme}>

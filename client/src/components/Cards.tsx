@@ -57,7 +57,7 @@ const to = (i: number) => ({
   x: 0,
   y: (i % 10) * -4,
   scale: 1,
-  rot: -10 + Math.random() * 20,
+  rot: 0,
   delay: i * 100 + 1000,
 });
 const from = (_i: number) => ({ x: 0, rot: 0, scale: 1.5, y: -1000 });
@@ -132,11 +132,11 @@ function Cards({ data, setLoaded, loaded }: CardsProps) {
             className="iti-cards__item"
             style={{
               ...styles,
-              // transform: interpolate(
-              //   [styles.rot, styles.scale],
-              //   (r, s) =>
-              //     `rotateX(30deg) rotateY(${r / 10}deg) rotateZ(${r}deg) `
-              // ),
+              transform: interpolate(
+                [styles.rot, styles.scale],
+                (r, s) =>
+                  `rotateX(30deg) rotateY(${r / 10}deg) rotateZ(${r}deg) `
+              ),
             }}
           >
             <img src={data[index]} />

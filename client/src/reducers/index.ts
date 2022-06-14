@@ -1,5 +1,6 @@
 import { createReducer } from "@reduxjs/toolkit";
 import { combineReducers } from "redux";
+import localforage from "localforage";
 
 const defaultCardsState = [
   {
@@ -45,12 +46,16 @@ const cardsReducer = (state = defaultCardsState, action: any) => {
 
 const cartReducer = (state = defaultCartsState, action: any) => {
   switch (action.type) {
+    case "LOAD_CARDS":
+      return action.payload as card[];
     case "ADD_TO_CART":
-      return state.map((el) =>
+      let result = state.map((el) =>
         el.active
           ? { ...el, cards: [...el.cards, action.payload as string] }
           : el
       );
+      localforage.setItem("cards", result);
+      return result;
     case "NEXT_DAY":
       let nextIndex = state.findIndex((el) => el.active) + 1;
 
