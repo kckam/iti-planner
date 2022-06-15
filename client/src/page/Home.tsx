@@ -1,15 +1,10 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import {
-  useTransition,
-  animated,
-  useSpring,
-  useTrail,
-  useSprings,
-} from "react-spring";
+import { animated, useSprings } from "react-spring";
 import Cards from "../components/Cards";
 import { useSelector } from "react-redux";
 import { useAppSelector } from "../hooks/hooks";
+import { NAV } from "../App";
 
 const StyledHome = styled.section`
   position: relative;
