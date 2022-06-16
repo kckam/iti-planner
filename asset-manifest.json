@@ -1,11 +1,11 @@
 {
-  "main.js": "/iti-planner/static/js/main.ce6ee064.chunk.js",
-  "main.js.map": "/iti-planner/static/js/main.ce6ee064.chunk.js.map",
-  "runtime~main.js": "/iti-planner/static/js/runtime~main.6f2942b7.js",
-  "runtime~main.js.map": "/iti-planner/static/js/runtime~main.6f2942b7.js.map",
-  "static/js/2.bf3cde8d.chunk.js": "/iti-planner/static/js/2.bf3cde8d.chunk.js",
-  "static/js/2.bf3cde8d.chunk.js.map": "/iti-planner/static/js/2.bf3cde8d.chunk.js.map",
-  "index.html": "/iti-planner/index.html",
-  "precache-manifest.d320e69e6ebf463de5a91b4ba51259d4.js": "/iti-planner/precache-manifest.d320e69e6ebf463de5a91b4ba51259d4.js",
-  "service-worker.js": "/iti-planner/service-worker.js"
+  "main.js": "/static/js/main.ce6ee064.chunk.js",
+  "main.js.map": "/static/js/main.ce6ee064.chunk.js.map",
+  "runtime~main.js": "/static/js/runtime~main.a8a9905a.js",
+  "runtime~main.js.map": "/static/js/runtime~main.a8a9905a.js.map",
+  "static/js/2.51b7fcd5.chunk.js": "/static/js/2.51b7fcd5.chunk.js",
+  "static/js/2.51b7fcd5.chunk.js.map": "/static/js/2.51b7fcd5.chunk.js.map",
+  "index.html": "/index.html",
+  "precache-manifest.e2bdb8b75b1e5bd7b87fbc08eb7ddf19.js": "/precache-manifest.e2bdb8b75b1e5bd7b87fbc08eb7ddf19.js",
+  "service-worker.js": "/service-worker.js"
 }
