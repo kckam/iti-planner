@@ -1,4 +1,4 @@
-import React, { useEffect, Dispatch, SetStateAction } from "react";
+import React, { useEffect, Dispatch, SetStateAction, memo } from "react";
 import styled from "styled-components";
 import {
   useTransition,
@@ -16,6 +16,7 @@ interface CardsProps {
   data: string[];
   loaded: boolean;
   setLoaded: Dispatch<SetStateAction<boolean>>;
+  setShareId: Dispatch<SetStateAction<number | null>>;
 }
 
 const StyledCards = styled.ul`
@@ -62,16 +63,24 @@ const to = (i: number) => ({
 });
 const from = (_i: number) => ({ x: 0, rot: 0, scale: 1.5, y: -1000 });
 
-function Cards({ data, setLoaded, loaded }: CardsProps) {
+function Cards({ data, setLoaded, loaded, setShareId }: CardsProps) {
   const [cardProps, cardApi] = useSprings(data.length, (i) => ({
     ...to(i),
     from: from(i),
   }));
 
+  console.log("reddd");
+
   const dispatch = useDispatch();
 
   const bind = useDrag(
-    ({ args: [index], down, movement: [mx], direction: [xDir], velocity }) => {
+    ({
+      args: [index],
+      down,
+      movement: [mx, my],
+      direction: [xDir],
+      velocity,
+    }) => {
       const trigger = velocity > 0.01;
       const dir = xDir < 0 ? -1 : 1;
 
@@ -79,8 +88,10 @@ function Cards({ data, setLoaded, loaded }: CardsProps) {
         if (index !== i) return;
         let boundWidth: HTMLElement =
           document.querySelector(".category__item")!;
-        const isGone = !down && trigger;
+        const isGone = !down && trigger && my > -30;
+        const isShare = !down && my < -30;
         const x = isGone ? (200 + boundWidth.offsetWidth) * dir : down ? mx : 0;
+        const y = down && my < 0 ? my : 0;
         const rot = mx / 100 + (isGone ? dir * 100 * velocity : 0);
         const scale = down ? 1.1 : 1;
 
@@ -88,8 +99,13 @@ function Cards({ data, setLoaded, loaded }: CardsProps) {
           dispatch(addToCart(i));
         }
 
+        if (isShare) {
+          setShareId(index);
+        }
+
         return {
           x,
+          y,
           rot,
           scale,
           delay: undefined,
@@ -99,7 +115,6 @@ function Cards({ data, setLoaded, loaded }: CardsProps) {
           },
         };
       });
-      console.log(xDir);
     }
   );
 
@@ -147,4 +162,4 @@ function Cards({ data, setLoaded, loaded }: CardsProps) {
   );
 }
 
-export default Cards;
+export default memo(Cards);

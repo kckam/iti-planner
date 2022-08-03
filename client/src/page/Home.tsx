@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { animated, useSprings } from "react-spring";
+import { animated, useSprings, useTransition } from "react-spring";
 import Cards from "../components/Cards";
 import { useSelector } from "react-redux";
 import { useAppSelector } from "../hooks/hooks";
@@ -14,6 +14,16 @@ const StyledHome = styled.section`
   display: flex;
   flex-direction: column;
   width: 100%;
+
+  .share-wrapper {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 1000;
+  }
 
   img {
     max-width: 100%;
@@ -45,6 +55,7 @@ const StyledHome = styled.section`
 
 function Home() {
   const [loaded, setLoaded] = useState(false);
+  const [shareId, setShareId] = useState<number | null>(null);
   const cards = useAppSelector((state) => state.cards);
 
   const [props, api2] = useSprings(cards.length, (i) => ({
@@ -57,8 +68,23 @@ function Home() {
     delay: i * 100 + 500,
   }));
 
+  const shareTransition = useTransition(shareId, {
+    from: { opacity: 0, scale: 0 },
+    enter: { opacity: 1, scale: 1 },
+    leave: { opacity: 0, scale: 0 },
+  });
+
   return (
     <StyledHome>
+      {shareTransition(
+        (styles, item) =>
+          item && (
+            <animated.div className="share-wrapper" style={styles}>
+              <div onClick={() => setShareId(null)}>Close</div>Share
+            </animated.div>
+          )
+      )}
+
       <animated.ul
         className="category"
         // onClick={() => {
@@ -99,6 +125,7 @@ function Home() {
               data={cards[index].cards}
               loaded={loaded}
               setLoaded={setLoaded}
+              setShareId={setShareId}
             />
           </animated.li>
         ))}

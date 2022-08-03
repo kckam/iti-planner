@@ -45,11 +45,9 @@ const cardsReducer = (state = defaultCardsState, action: any) => {
 };
 
 const cartReducer = (state = defaultCartsState, action: any) => {
-  console.log("state");
-  console.log(state);
   switch (action.type) {
     case "LOAD_CARDS":
-      return action.payload || (defaultCartsState as card[]);
+      return (action.payload || defaultCartsState) as card[];
     case "ADD_TO_CART":
       let result = state.map((el) =>
         el.active
